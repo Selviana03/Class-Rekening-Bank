@@ -1,57 +1,100 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aplikasi Rekening Bank</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
-        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 350px; text-align: center; }
-        h2 { color: #2c3e50; }
-        .saldo-box { font-size: 1.5rem; font-weight: bold; color: #27ae60; margin: 20px 0; padding: 10px; background: #e8f6ed; border-radius: 8px; }
-        button { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; transition: 0.3s; }
-        button:hover { background: #2980b9; }
-    </style>
-</head>
-<body>
+/**
+ * TUGAS PEMROGRAMAN BERORIENTASI OBJEK
+ * ----------------------------------
+ * Nama : Serlin Selviana Giay
+ * NIM  : 251410030
+ * Topik: Polimorfisme, Abstraksi, & Static Methods
+ */
 
-<div class="card">
-    <h2>Bank Selvi</h2>
-    <p>Nomor Rekening: 123-456-789</p>
-    <div class="saldo-box" id="displaySaldo">Rp 500.000</div>
-    
-    <button onclick="deposit()">Tambah Saldo (Setor)</button>
-    <button onclick="tarik()">Tarik Uang</button>
-</div>
+import 'dart:math';
 
-<script>
-    // Ini adalah logika "Class" yang kamu buat tadi, dikonversi ke JavaScript
-    let saldo = 500000;
+// 1. Abstract Class (Abstraksi)
+abstract class Pekerja {
+  String nama;
+  Pekerja(this.nama);
 
-    function updateTampilan() {
-        document.getElementById('displaySaldo').innerText = "Rp " + saldo.toLocaleString('id-ID');
+  // Method Abstract: Wajib diimplementasikan oleh subclass
+  void bekerja(); 
+
+  // Method Non-Abstract
+  void identitas() {
+    print("Karyawan: $nama | Pengawas: Serlin Selviana Giay");
+  }
+}
+
+// 2. Implementasi Class (Inheritance & Overriding)
+class Programmer extends Pekerja {
+  Programmer(String nama) : super(nama);
+  @override
+  void bekerja() => print("$nama sedang mengembangkan sistem perbankan.");
+}
+
+class Dokter extends Pekerja {
+  Dokter(String nama) : super(nama);
+  @override
+  void bekerja() => print("$nama sedang memberikan layanan kesehatan.");
+}
+
+class Guru extends Pekerja {
+  Guru(String nama) : super(nama);
+  @override
+  void bekerja() => print("$nama sedang memberikan pelatihan teknis.");
+}
+
+// 4. Multiple Interface Simulation (Tablet)
+class Komputer { void proses() => print("Memproses data..."); }
+class Kamera { void foto() => print("Mengambil foto..."); }
+class Telepon { void call() => print("Menghubungi nasabah..."); }
+
+class Tablet implements Komputer, Kamera, Telepon {
+  @override
+  void proses() => print("Tablet NIM 251410030: Memproses data.");
+  @override
+  void foto() => print("Tablet NIM 251410030: Foto dokumen.");
+  @override
+  void call() => print("Tablet NIM 251410030: Telepon support.");
+}
+
+// 5. MathUtils (Static Methods)
+class MathUtils {
+  static int factorial(int n) => (n <= 1) ? 1 : n * factorial(n - 1);
+
+  static bool isPrima(int n) {
+    if (n < 2) return false;
+    for (int i = 2; i <= sqrt(n); i++) {
+      if (n % i == 0) return false;
     }
+    return true;
+  }
 
-    function deposit() {
-        let jumlah = prompt("Masukkan jumlah setor:");
-        if (jumlah > 0) {
-            saldo += parseInt(jumlah);
-            alert("Berhasil setor: Rp " + jumlah);
-            updateTampilan();
-        }
-    }
+  static double hitungRataRata(List<num> angka) {
+    return angka.isEmpty ? 0 : angka.reduce((a, b) => a + b) / angka.length;
+  }
+}
 
-    function tarik() {
-        let jumlah = prompt("Masukkan jumlah tarik:");
-        if (jumlah > saldo) {
-            alert("Saldo tidak cukup!");
-        } else if (jumlah > 0) {
-            saldo -= parseInt(jumlah);
-            alert("Berhasil tarik: Rp " + jumlah);
-            updateTampilan();
-        }
-    }
-</script>
+// --- MAIN FUNCTION ---
+void main() {
+  print("========================================");
+  print("NAMA : SERLIN SELVIANA GIAY");
+  print("NIM  : 251410030");
+  print("========================================\n");
 
-</body>
-</html>
+  // 3. Demonstrasi Polimorfisme
+  List<Pekerja> daftar = [
+    Programmer("Budi"),
+    Dokter("Siti"),
+    Guru("Andi")
+  ];
+
+  print("-- Output Polimorfisme --");
+  for (var p in daftar) {
+    p.identitas();
+    p.bekerja();
+    print("--------------------");
+  }
+
+  print("\n-- Output MathUtils (Static) --");
+  print("Faktorial dari 5: ${MathUtils.factorial(5)}");
+  print("Apakah 23 Bilangan Prima? ${MathUtils.isPrima(23)}");
+  print("Rata-rata Nilai: ${MathUtils.hitungRataRata([80, 90, 75, 100])}");
+}
