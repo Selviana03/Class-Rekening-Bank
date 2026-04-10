@@ -1,0 +1,65 @@
+class RekeningBank {
+  // Field private: tidak bisa diakses langsung dari luar library/file
+  String _nomorRekening;
+  double _saldo;
+
+  // Constructor
+  RekeningBank(this._nomorRekening, this._saldo) {
+    // Validasi awal saat pembuatan akun
+    if (_saldo < 0) {
+      _saldo = 0;
+      print("Peringatan: Saldo awal tidak boleh negatif. Set ke 0.");
+    }
+  }
+
+  // Method untuk menambah saldo
+  void deposit(double jumlah) {
+    if (jumlah > 0) {
+      _saldo += jumlah;
+      print("Berhasil deposit: Rp$jumlah");
+    } else {
+      print("Jumlah deposit harus lebih dari 0.");
+    }
+  }
+
+  // Method untuk menarik uang (dengan validasi saldo tidak boleh negatif)
+  void tarik(double jumlah) {
+    if (jumlah <= 0) {
+      print("Jumlah penarikan harus lebih dari 0.");
+    } else if (jumlah > _saldo) {
+      print("Transaksi Gagal: Saldo tidak mencukupi untuk menarik Rp$jumlah.");
+    } else {
+      _saldo -= jumlah;
+      print("Berhasil menarik: Rp$jumlah");
+    }
+  }
+
+  // Method untuk mengecek saldo saat ini
+  void cekSaldo() {
+    print("----------------------------------");
+    print("Nomor Rekening: $_nomorRekening");
+    print("Saldo Saat Ini: Rp$_saldo");
+    print("----------------------------------");
+  }
+}
+
+void main() {
+  // Simulasi Transaksi
+  print("=== Simulasi Bank Gemini ===");
+
+  // 1. Inisialisasi akun
+  var akunSaya = RekeningBank("123-456-789", 500000);
+  akunSaya.cekSaldo();
+
+  // 2. Melakukan deposit
+  akunSaya.deposit(200000);
+  
+  // 3. Mencoba menarik uang yang valid
+  akunSaya.tarik(100000);
+  
+  // 4. Mencoba menarik uang melebihi saldo (Validasi bekerja)
+  akunSaya.tarik(700000);
+
+  // 5. Cek saldo akhir
+  akunSaya.cekSaldo();
+}
