@@ -1,66 +1,57 @@
-class RekeningBank {
-  // Field private: tidak bisa diakses langsung dari luar library/file
-  String _nomorRekening;
-  double _saldo;
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Rekening Bank</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        h2 { color: #2c3e50; }
+        .saldo-box { font-size: 1.5rem; font-weight: bold; color: #27ae60; margin: 20px 0; padding: 10px; background: #e8f6ed; border-radius: 8px; }
+        button { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; transition: 0.3s; }
+        button:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
 
-  // Constructor
-  RekeningBank(this._nomorRekening, this._saldo) {
-    // Validasi awal saat pembuatan akun
-    if (_saldo < 0) {
-      _saldo = 0;
-      print("Peringatan: Saldo awal tidak boleh negatif. Set ke 0.");
+<div class="card">
+    <h2>Bank Selvi</h2>
+    <p>Nomor Rekening: 123-456-789</p>
+    <div class="saldo-box" id="displaySaldo">Rp 500.000</div>
+    
+    <button onclick="deposit()">Tambah Saldo (Setor)</button>
+    <button onclick="tarik()">Tarik Uang</button>
+</div>
+
+<script>
+    // Ini adalah logika "Class" yang kamu buat tadi, dikonversi ke JavaScript
+    let saldo = 500000;
+
+    function updateTampilan() {
+        document.getElementById('displaySaldo').innerText = "Rp " + saldo.toLocaleString('id-ID');
     }
-  }
 
-  // Method untuk menambah saldo
-  void deposit(double jumlah) {
-    if (jumlah > 0) {
-      _saldo += jumlah;
-      print("Berhasil deposit: Rp$jumlah");
-    } else {
-      print("Jumlah deposit harus lebih dari 0.");
+    function deposit() {
+        let jumlah = prompt("Masukkan jumlah setor:");
+        if (jumlah > 0) {
+            saldo += parseInt(jumlah);
+            alert("Berhasil setor: Rp " + jumlah);
+            updateTampilan();
+        }
     }
-  }
 
-  // Method untuk menarik uang (dengan validasi saldo tidak boleh negatif)
-  void tarik(double jumlah) {
-    if (jumlah <= 0) {
-      print("Jumlah penarikan harus lebih dari 0.");
-    } else if (jumlah > _saldo) {
-      print("Transaksi Gagal: Saldo tidak mencukupi untuk menarik Rp$jumlah.");
-    } else {
-      _saldo -= jumlah;
-      print("Berhasil menarik: Rp$jumlah");
+    function tarik() {
+        let jumlah = prompt("Masukkan jumlah tarik:");
+        if (jumlah > saldo) {
+            alert("Saldo tidak cukup!");
+        } else if (jumlah > 0) {
+            saldo -= parseInt(jumlah);
+            alert("Berhasil tarik: Rp " + jumlah);
+            updateTampilan();
+        }
     }
-  }
+</script>
 
-  // Method untuk mengecek saldo saat ini
-  void cekSaldo() {
-    print("----------------------------------");
-    print("Nomor Rekening: $_nomorRekening");
-    print("Saldo Saat Ini: Rp$_saldo");
-    print("----------------------------------");
-  }
-}
-
-void main() {
-  // Simulasi Transaksi
-  print("=== Simulasi Bank Gemini ===");
-
-  // 1. Inisialisasi akun
-  var akunSaya = RekeningBank("123-456-789", 500000);
-  akunSaya.cekSaldo();
-
-  // 2. Melakukan deposit
-  akunSaya.deposit(200000);
-  
-  // 3. Mencoba menarik uang yang valid
-  akunSaya.tarik(100000);
-  
-  // 4. Mencoba menarik uang melebihi saldo (Validasi bekerja)
-  akunSaya.tarik(700000);
-
-  // 5. Cek saldo akhir
-  akunSaya.cekSaldo();
-}
-
+</body>
+</html>
