@@ -1,74 +1,57 @@
-/**
- * Nama: Serlin Selviana Giay
- * NIM : 251410030
- * Tugas: Implementasi Konstruktor dan Enkapsulasi (Slide 14)
- */
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplikasi Rekening Bank</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 350px; text-align: center; }
+        h2 { color: #2c3e50; }
+        .saldo-box { font-size: 1.5rem; font-weight: bold; color: #27ae60; margin: 20px 0; padding: 10px; background: #e8f6ed; border-radius: 8px; }
+        button { background: #3498db; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; transition: 0.3s; }
+        button:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
 
-class RekeningBank {
-  // Field private (menggunakan underscore _)
-  String _nomorRekening;
-  double _saldo;
+<div class="card">
+    <h2>Bank Selvi</h2>
+    <p>Nomor Rekening: 123-456-789</p>
+    <div class="saldo-box" id="displaySaldo">Rp 500.000</div>
+    
+    <button onclick="deposit()">Tambah Saldo (Setor)</button>
+    <button onclick="tarik()">Tarik Uang</button>
+</div>
 
-  // Konstruktor
-  RekeningBank(this._nomorRekening, this._saldo) {
-    // Validasi awal agar saldo tidak negatif saat pembuatan akun
-    if (this._saldo < 0) {
-      this._saldo = 0;
-      print("Peringatan: Saldo awal tidak boleh negatif. Saldo diset ke 0.");
+<script>
+    // Ini adalah logika "Class" yang kamu buat tadi, dikonversi ke JavaScript
+    let saldo = 500000;
+
+    function updateTampilan() {
+        document.getElementById('displaySaldo').innerText = "Rp " + saldo.toLocaleString('id-ID');
     }
-  }
 
-  // Method untuk menambah saldo
-  void deposit(double jumlah) {
-    if (jumlah > 0) {
-      _saldo += jumlah;
-      print("Berhasil Deposit: Rp$jumlah");
-    } else {
-      print("Jumlah deposit harus lebih dari 0.");
+    function deposit() {
+        let jumlah = prompt("Masukkan jumlah setor:");
+        if (jumlah > 0) {
+            saldo += parseInt(jumlah);
+            alert("Berhasil setor: Rp " + jumlah);
+            updateTampilan();
+        }
     }
-  }
 
-  // Method untuk menarik uang dengan validasi saldo tidak boleh negatif
-  void tarik(double jumlah) {
-    if (jumlah <= 0) {
-      print("Jumlah penarikan harus lebih dari 0.");
-    } else if (jumlah > _saldo) {
-      print("Gagal Tarik: Saldo tidak mencukupi. (Saldo saat ini: Rp$_saldo)");
-    } else {
-      _saldo -= jumlah;
-      print("Berhasil Tarik: Rp$jumlah");
+    function tarik() {
+        let jumlah = prompt("Masukkan jumlah tarik:");
+        if (jumlah > saldo) {
+            alert("Saldo tidak cukup!");
+        } else if (jumlah > 0) {
+            saldo -= parseInt(jumlah);
+            alert("Berhasil tarik: Rp " + jumlah);
+            updateTampilan();
+        }
     }
-  }
+</script>
 
-  // Method untuk mengecek saldo saat ini
-  void cekSaldo() {
-    print("----------------------------------");
-    print("Nomor Rekening : $_nomorRekening");
-    print("Saldo Saat Ini : Rp$_saldo");
-    print("----------------------------------");
-  }
-}
-
-void main() {
-  // Simulasi Transaksi
-  print("=== Simulasi Transaksi Bank - Serlin Selviana Giay ===");
-
-  // 1. Inisialisasi Akun
-  RekeningBank akunSerlin = RekeningBank("251410030-ABC", 500000);
-  
-  // 2. Cek Saldo Awal
-  akunSerlin.cekSaldo();
-
-  // 3. Melakukan Deposit
-  akunSerlin.deposit(200000);
-  
-  // 4. Melakukan Penarikan
-  akunSerlin.tarik(150000);
-
-  // 5. Mencoba Penarikan Melebihi Saldo (Uji Validasi)
-  print("\nMencoba tarik Rp1.000.000...");
-  akunSerlin.tarik(1000000);
-
-  // 6. Cek Saldo Akhir
-  akunSerlin.cekSaldo();
-}
+</body>
+</html>
